@@ -13,6 +13,8 @@ lazy val root = (project in file("."))
       "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
       "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion,
       "com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion,
+      "org.sangria-graphql" %% "sangria" % "2.0.0",
+      "org.sangria-graphql" %% "sangria-spray-json" % "1.0.2",
       "com.typesafe.slick" %% "slick" % "3.3.3",
       "org.slf4j" % "slf4j-nop" % "1.6.4",
       "com.typesafe.slick" %% "slick-hikaricp" % "3.3.3",

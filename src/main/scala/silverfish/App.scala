@@ -3,6 +3,10 @@ package silverfish
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Route
+import spray.json._
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.io.StdIn
@@ -14,14 +18,20 @@ object App {
   implicit val executionContext: ExecutionContextExecutor =
     system.executionContext
 
-  private val dao: DAO = DBSchema.createDatabase
-
   def main(args: Array[String]): Unit = {
-    val route = Routes.route(dao)
+    val route: Route =
+      (post & path("graphql")) {
+        entity(as[JsValue]) { requestJson =>
+          GraphqlServer.endpoint(requestJson)
+        }
+      } ~ {
+        getFromResource("graphiql.html")
+      }
+
     val bindingFuture = Http().newServerAt("localhost", 8080).bind(route)
 
     bindingFuture onComplete {
-      case Success(value) =>
+      case Success(_) =>
         println(
           s"Server online at http://localhost:8080/\nPress RETURN to stop..."
         )
