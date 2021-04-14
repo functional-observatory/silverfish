@@ -6,7 +6,7 @@ import sangria.ast.StringValue
 import sangria.schema.ScalarType
 
 object DateTimeScalar {
-  implicit val GraphqlDateTime: ScalarType[DateTime] = ScalarType[DateTime](
+  val GraphqlDateTime: ScalarType[DateTime] = ScalarType[DateTime](
     "DateTime",
     coerceOutput = (dt, _) => dt.toString,
     coerceInput = {
